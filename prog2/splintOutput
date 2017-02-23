@@ -1,0 +1,117 @@
+[jaherson@colossus prog2]$ splint sums.c
+Splint 3.1.2 --- 11 Oct 2015
+
+sums.c: (in function lineSums)
+sums.c:54:10: Operand of ! is non-boolean (int): !done
+  The operand of a boolean operator is not a boolean. Use +ptrnegate to allow !
+  to be used on pointers. (Use -boolops to inhibit warning)
+sums.c:57:31: Fresh storage entries not released before return
+  A memory leak has been detected. Storage allocated locally is not released
+  before the last reference to it is lost. (Use -mustfreefresh to inhibit
+  warning)
+   sums.c:53:2: Fresh storage entries created
+sums.c:57:24: Empty return in function declared to return char **
+  empty return in function declared to return value (Use -emptyret to inhibit
+  warning)
+sums.c:58:11: Unrecognized identifier: getline
+  Identifier used in code has not been declared. (Use -unrecog to inhibit
+  warning)
+sums.c:60:19: Invalid character (ascii: -30), skipping character
+  Code cannot be parsed.  For help on parse errors, see splint -help
+  parseerrors. (Use -syntax to inhibit warning)
+sums.c:60:20: Invalid character (ascii: -128), skipping character
+sums.c:60:21: Invalid character (ascii: -103), skipping character
+sums.c:60:22: Unrecognized identifier: n
+sums.c:60:24: Invalid character (ascii: -30), skipping character
+sums.c:60:25: Invalid character (ascii: -128), skipping character
+sums.c:60:26: Invalid character (ascii: -103), skipping character
+sums.c:60:13: Passed storage word not completely defined (*word is undefined):
+                 strrchr (word, ...)
+  Storage derivable from a parameter, return value or global is not defined.
+  Use /*@out@*/ to denote passed or returned storage which need not be defined.
+  (Use -compdef to inhibit warning)
+   sums.c:56:3: Storage *word allocated
+sums.c:60:3: Assignment of int to char: *(strrchr(word, n)) = 0
+  Types are incompatible. (Use -type to inhibit warning)
+sums.c:65:54: Passed storage output not completely defined (*output is
+                 undefined): MD5 (..., output)
+sums.c:66:3: Index of possibly null pointer entries: entries
+  A possibly null pointer is dereferenced.  Value is either the result of a
+  function which may return null (in which case, code should check it is not
+  null), or a global, parameter or structure field declared with the null
+  qualifier. (Use -nullderef to inhibit warning)
+   sums.c:53:10: Storage entries may become null
+sums.c:66:21: Function malloc expects arg 1 to be size_t gets arbitrary signed
+                 integral type: lineLen + 1 + 127
+  To allow arbitrary integral types to match any integral type, use
+  +matchanyintegral.
+sums.c:67:10: Possibly null storage entries[] passed as non-null param:
+                 strcat (entries[i], ...)
+  A possibly null pointer is passed as a parameter corresponding to a formal
+  parameter with no /*@null@*/ annotation.  If NULL may be used for this
+  parameter, add a /*@null@*/ annotation to the function parameter declaration.
+  (Use -nullpass to inhibit warning)
+   sums.c:66:14: Storage entries[] may become null
+sums.c:67:10: Passed storage entries[] not completely defined (*(entries[]) is
+                 undefined): strcat (entries[i], ...)
+   sums.c:66:3: Storage *(entries[]) allocated
+sums.c:70:4: Buffer overflow possible with sprintf.  Recommend using snprintf
+                instead: sprintf
+  Use of function that may lead to buffer overflow. (Use -bufferoverflowhigh to
+  inhibit warning)
+sums.c:70:27: Format argument 1 to sprintf (%02x) expects unsigned int gets
+                 unsigned char: sumPtr[j]
+  To make char and int types equivalent, use +charint.
+   sums.c:70:24: Corresponding format code
+sums.c:73:11: Possibly null storage outFile passed as non-null param:
+                 fprintf (outFile, ...)
+   sums.c:51:10: Storage outFile may become null
+sums.c:79:10: Dereference of possibly null pointer entries: *entries
+   sums.c:53:10: Storage entries may become null
+sums.c:79:8: Value *entries used before definition
+  An rvalue is used that may not be initialized to a value on some execution
+  path. (Use -usedef to inhibit warning)
+sums.c:79:8: Return value type char * does not match declared type char **:
+                (*entries)
+sums.c:79:19: Fresh storage sumPtr not released before return
+   sums.c:65:3: Fresh storage sumPtr created
+sums.c:79:19: Fresh storage word not released before return
+   sums.c:56:3: Fresh storage word created
+sums.c:79:19: Fresh storage entries not released before return
+   sums.c:53:2: Fresh storage entries created
+sums.c:36:16: Variable nbytes declared but not used
+  A variable is declared but never used. Use /*@unused@*/ in front of
+  declaration to suppress message. (Use -varuse to inhibit warning)
+sums.c:88:5: Function main declared with 3 args, should have 2 (int argc, char
+                *argv[])
+  The function main does not match the expected type. (Use -maintype to inhibit
+  warning)
+sums.c: (in function main)
+sums.c:92:2: Assignment of char ** to char *:
+                theSums = lineSums(argv[1], argv[2])
+sums.c:96:11: Operands of != have incompatible types (char, char *):
+                 theSums[i] != (char *)0
+sums.c:96:52: Format argument 1 to printf (%s) expects char * gets int: i
+  Type of parameter is not consistent with corresponding code in format string.
+  (Use -formattype to inhibit warning)
+   sums.c:96:47: Corresponding format code
+sums.c:96:52: Null storage i passed as non-null param: printf (..., i)
+   sums.c:96:9: Storage i becomes null
+sums.c:96:38: Format string for printf has 1 arg, given 2
+sums.c:96:11: Incompatible types for != (char, char *) (in post loop test):
+                 theSums[i] != (char *)0
+sums.c:101:2: Path with no return in function declared to return int
+  There is a path through a function declared to return a value on which there
+  is no return statement. This means the execution may fall through without
+  returning a meaningful result to the caller. (Use -noret to inhibit warning)
+sums.c:88:14: Parameter argc not used
+  A function parameter is not used in the body of the function. If the argument
+  is needed for type compatibility or future plans, use /*@unused@*/ in the
+  argument declaration. (Use -paramuse to inhibit warning)
+sums.c:88:40: Parameter envp not used
+sums.c:34:8: Function exported but not used outside sums: lineSums
+  A declaration is exported, but not used outside this module. Declaration can
+  use static qualifier. (Use -exportlocal to inhibit warning)
+   sums.c:80:1: Definition of lineSums
+
+Finished checking --- 39 code warnings

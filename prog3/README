@@ -1,0 +1,11 @@
+Jake Herson
+Slip Days = 0
+Slip Days Remaining = 5
+
+1. Unlink deletes that name from the file system so if you call unlink in unlink it cannot find the same file.
+
+2. 19, you can verify by looking up documentation on syscalls.
+
+3. 
+
+4. Yes, but it won't work as expected.
